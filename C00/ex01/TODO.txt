@@ -1,0 +1,2 @@
+1.cree chaque fonction des hpp
+2. 
