@@ -1,5 +1,9 @@
 #include "contact.hpp"
-
+/**
+ * @brief toutes ces fonction sont des setter qui set une valeur a une autre
+ * 
+ * @param str string a copier
+ */
 void Contact::setFirstName(const std::string& str)
 {
 	this->first_name = str;

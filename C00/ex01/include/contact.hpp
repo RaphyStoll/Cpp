@@ -2,6 +2,7 @@
 # define CONTACT_HPP
 
 #include <string>
+#include <iostream>
 
 // === mini norm ===
 // classe = UpperCamelCase
@@ -20,22 +21,28 @@ class Contact {
 		//regle de 3 sur la classe (constructeur, copie, destructeur)
 		Contact();	// declaration de la classe a l'init (constructeur)
 		Contact(const Contact& other); // copie
+		Contact& operator=(const Contact& other);
 		~Contact(); //destructeur (ici vide car rien a delet (free))
 
-		// declaration de fonction de la classe
+		// declaration de fonction de la classe (methode)
+		// methode setter
 		void	setFirstName(const std::string& str);
 		void	setLastName(const std::string& str);
 		void   	setNickName(const std::string& str);
 		void	setPhoneNumber(const std::string& str);
 		void	setDarkestSecret(const std::string& str);
 
+		// methode getter
 		const std::string&	getFirstName() const;
 		const std::string&	getLastName() const;
 		const std::string&	getNickName() const;
+		const std::string&	getPhoneNumber() const;
 		const std::string&	getDarkestSecret() const;
-		int					getOldestIndex();
 
+		//helper
 		bool isEmpty() const;
 };
+
+
 
 #endif

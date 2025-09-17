@@ -1,27 +1,31 @@
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 #include "phonebook.hpp"
+#include "config.hpp"
+#include "debug.hpp"
 
 static void inti();
-static bool switch_case(PhoneBook& pb,Contact& contact, const std::string line);
+static bool switch_case(PhoneBook& pb, const std::string line);
 
 int main ()
 {
-	bool flag = false;
+	
 	std::string line;
-	PhoneBook pb;
-	Contact cpy;
+	PhoneBook pb = PhoneBook();
 
-	if (!flag)
+	system("clear");	
+
+	while (1)
 	{
-		system("clear");
-		flag = true;
-	}
 		inti();
 		std::getline(std::cin, line);
-		if (!switch_case(pb, cpy, line))
-			main();
-		
+		if (switch_case(pb, line))
+			continue ;
+		else
+			break ;
+	}
+	return 0;
 }
 
 static void inti()
@@ -33,24 +37,24 @@ static void inti()
 	std::cout << "EXIT : for exiting the phonebook" << std::endl;
 }
 
-static bool switch_case(PhoneBook& pb,Contact& contact, const std::string line)
+static bool switch_case(PhoneBook& pb, const std::string line)
 {
 	
 	if (line == "ADD" || line == "add" || line == "Add")
 	{
-		pb.add(contact);
-		pb.incrementCount();
+		pb.add();
+		return true;
 	}
 	else if (line == "SEARCH" || line == "search" || line == "Search")
 		return true;
 	else if (line == "EXIT" || line == "exit" || line == "Exit")
-		return true;
+		return false;
 	else
 	{
 		system("clear");
 		std::cout << "Command not found please retry" << std::endl;
 		std::cout << "" << std::endl;
-		return false;
+		return true;
 	}
 	return true;
 }
