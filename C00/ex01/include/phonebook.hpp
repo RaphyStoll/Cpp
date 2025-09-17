@@ -1,5 +1,5 @@
-#ifndef PHONEBOOK.HPP
-# define PHONEBOOK.HPP
+#ifndef PHONEBOOK_HPP
+# define PHONEBOOK_HPP
 
 #include "contact.hpp"
 
@@ -16,7 +16,9 @@ class PhoneBook {
 
 	void add(const Contact& contact);
 	int  size() const;
+	void exitProgram();
 
+	void incrementCount();
 	int findByFirstName(const std::string& name) const;
     int findByLastName(const std::string& name) const;
     int findByNickName(const std::string& name) const;
