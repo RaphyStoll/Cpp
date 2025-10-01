@@ -25,16 +25,16 @@ void PhoneBook::add()
 	sequence(cpy, &Contact::setDarkestSecret, "Add: darkest secret : ");
 	//system("clear");
 
-	this->contact[this->count] = cpy;
+	int slot = this->next;                 // emplacement physique d'insertion
+	this->contact[slot] = cpy;             // écriture dans le slot courant
 	if (this->count < 8)
-		this->count += 1;
-	int stored = this->next;
-	this->next = (this->next + 1) % 8;
-	
-	std::ostringstream build_msg; 
+		this->count++;                      // augmente le nombre réel de contacts jusqu'à 8
+	this->next = (this->next + 1) % 8;     // prépare le prochain slot (circulaire)
+
+	std::ostringstream build_msg;
 	build_msg << "=== Contact \""
 		<< cpy.getFirstName()
-		<< " " 
+		<< " "
 		<< cpy.getLastName()
 		<< "\" stored at slot [" << stored << "]"
 		<< " added ===";

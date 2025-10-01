@@ -18,7 +18,7 @@ class PhoneBook {
 		~PhoneBook();
 
 	void add();
-	int  size() const;
+	int  search() const;
 	void exitProgram();
 
 	int findByFirstName(const std::string& name) const;

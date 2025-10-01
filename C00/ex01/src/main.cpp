@@ -39,14 +39,18 @@ static void inti()
 
 static bool switch_case(PhoneBook& pb, const std::string line)
 {
-	
+	system("clear");
 	if (line == "ADD" || line == "add" || line == "Add")
 	{
 		pb.add();
 		return true;
 	}
 	else if (line == "SEARCH" || line == "search" || line == "Search")
+	{
+		
+		pb.search();
 		return true;
+	}
 	else if (line == "EXIT" || line == "exit" || line == "Exit")
 		return false;
 	else
