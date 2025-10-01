@@ -36,7 +36,7 @@ void PhoneBook::add()
 		<< cpy.getFirstName()
 		<< " "
 		<< cpy.getLastName()
-		<< "\" stored at slot [" << stored << "]"
+		<< "\" stored at slot [" << slot << "]"
 		<< " added ===";
 	print_debug(build_msg.str());
 }

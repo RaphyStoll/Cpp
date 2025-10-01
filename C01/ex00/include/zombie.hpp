@@ -6,6 +6,7 @@ class Zombie {
 	public:
 		Zombie();
 		Zombie(const Zombie& other);
+		Zombie(const std::string& name); //constructeur avec setter pour name
 		Zombie& operator=(const Zombie& other);
 		~Zombie();
 
@@ -13,6 +14,6 @@ class Zombie {
 		const std::string& getName() const;
 
 		void announce(void);
-		Zombie* newZombie(std::string name);
-		void randomChump(std::string name);
-};
+	};
+	Zombie* newZombie(std::string name);
+	void randomChump(std::string name);

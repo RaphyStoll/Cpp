@@ -1,7 +1,9 @@
+NAME = BraiiiiiiinnnzzzZ
+
 CC = c++
 CPP_FLAG = -Wall -Werror -Wextra
 
-SRC = $(wildcard src/*.cpp)
+SRC = $(wildcard src/*.cpp) $(wildcard src/utils/*.cpp)
 
 all:
 	$(CC) $(CPP_FLAG) $(SRC) -Iinclude -o $(NAME)
