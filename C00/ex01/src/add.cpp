@@ -38,8 +38,7 @@ void PhoneBook::add()
 		<< cpy.getLastName()
 		<< "\" stored at slot [" << stored << "]"
 		<< " added ===";
-	std::string msg = build_msg.str();
-	print_debug(msg);
+	print_debug(build_msg.str());
 }
 
 static void sequence(Contact& contact,
