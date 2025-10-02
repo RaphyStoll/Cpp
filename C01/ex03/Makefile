@@ -1,4 +1,4 @@
-NAME = moarBrainz
+NAME = Violence
 CC = c++
 CPP_FLAGS = -Werror -Wall -Wextra
 INCLUDE = include
@@ -6,7 +6,7 @@ INCLUDE = include
 
 SRC = $(wildcard src/*.cpp) $(wildcard src/utils/*.cpp)
 
-all: 
+all:
 	$(CC) $(CPP_FLAGS) $(SRC) -Iinclude -o $(NAME)
 
 clean:

@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 
 class Zombie {
 	private:
-		std::string name;
+		std::string	name;
+		int			index;
 	public:
 		Zombie();
 		~Zombie();

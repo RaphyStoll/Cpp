@@ -1,6 +1,6 @@
-NAME = moarBrainz
+NAME = Brain
 CC = c++
-CPP_FLAGS = -Werror -Wall -Wextra
+CPP_FLAGS =  -Werror -Wall -Wextra
 INCLUDE = include
 
 
