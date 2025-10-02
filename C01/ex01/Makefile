@@ -1,0 +1,18 @@
+NAME = moarBrainz
+CC = c++
+CPP_FLAGS = -Werror -Wall -Wextra
+INCLUDE = include
+
+
+SRC = $(wildcard src/*.cpp) $(wildcard src/utils/*.cpp)
+
+all:
+	$(CC) $(CPP_FLAGS) $(SRC) -Iinclude -o $(NAME)
+
+claen:
+	rm -f $(NAME)
+
+re:
+	clean all
+
+.PHONY : all re clean
