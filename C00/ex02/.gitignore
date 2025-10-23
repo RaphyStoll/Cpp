@@ -1,0 +1,17 @@
+# Executables
+account
+my_test
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+debug.log
+*.log
+
+# VS Code
+.vscode/
+
+# System files
+.DS_Store
