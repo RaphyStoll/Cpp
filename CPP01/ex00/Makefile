@@ -11,7 +11,8 @@ all:
 clean:
 	rm -f $(NAME)
 
-re:
-	clean all
+fclean: clean
 
-.PHONY: all re clean
+re: fclean all
+
+.PHONY: all re clean fclean
