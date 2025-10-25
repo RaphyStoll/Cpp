@@ -5,6 +5,7 @@ megaphone
 *.a
 *.so
 *.dylib
+*.o
 
 megaphone
 PhoneBook
@@ -12,3 +13,6 @@ BraiiiiiiinnnzzzZ
 moarBrainz
 Brain
 Violence
+Replace
+Harl
+Harl_filter
