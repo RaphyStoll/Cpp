@@ -1,7 +1,7 @@
 NAME = BraiiiiiiinnnzzzZ
 
 CC = c++
-CPP_FLAG = -Wall -Werror -Wextra
+CPP_FLAG = -Wall -Werror -Wextra -std=c++98
 
 SRC = $(wildcard src/*.cpp) $(wildcard src/utils/*.cpp)
 

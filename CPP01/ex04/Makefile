@@ -1,12 +1,12 @@
-NAME = Brain
+NAME = Replace
 CC = c++
-CPP_FLAGS =  -Werror -Wall -Wextra -std=c++98
+CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
 INCLUDE = include
 
 
-SRC = $(wildcard src/*.cpp) $(wildcard src/utils/*.cpp)
+SRC = $(wildcard src/*.cpp)
 
-all: 
+all:
 	$(CC) $(CPP_FLAGS) $(SRC) -Iinclude -o $(NAME)
 
 clean:

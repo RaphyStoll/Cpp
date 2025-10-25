@@ -1,6 +1,6 @@
 NAME = Violence
 CC = c++
-CPP_FLAGS = -Werror -Wall -Wextra
+CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
 INCLUDE = include
 
 
