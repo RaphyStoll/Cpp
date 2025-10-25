@@ -1,7 +1,7 @@
 NAME = Mon_1er
 CC = c++
 CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
-INCLUDE = include
+INCLUDE = includes
 
 # Chemins LIBFTPP
 LIBFTPP_DIR = ../../LIBFTPP
@@ -16,10 +16,10 @@ else
     LIBFTPP_SHARED = $(LIBFTPP_DIR)/libftpp.so
 endif
 
-SRC = $(wildcard *.cpp)
+SRC = $(wildcard src/*.cpp)
 
 all: $(LIBFTPP_LIB)
-	$(CC) $(CPP_FLAGS) $(SRC) -Iinclude -I$(LIBFTPP_INCLUDE) $(LIBFTPP_LIB) -o $(NAME)
+	$(CC) $(CPP_FLAGS) $(SRC) -I$(INCLUDE) -I$(LIBFTPP_INCLUDE) $(LIBFTPP_LIB) -o $(NAME)
 
 # Compiler LIBFTPP si nécessaire
 $(LIBFTPP_LIB):
@@ -28,7 +28,7 @@ $(LIBFTPP_LIB):
 
 # Alternative avec bibliothèque partagée
 shared: $(LIBFTPP_SHARED)
-	$(CC) $(CPP_FLAGS) $(SRC) -Iinclude -I$(LIBFTPP_INCLUDE) -L$(LIBFTPP_DIR) -lftpp -o $(NAME)
+	$(CC) $(CPP_FLAGS) $(SRC) -I$(INCLUDE) -I$(LIBFTPP_INCLUDE) -L$(LIBFTPP_DIR) -lftpp -o $(NAME)
 
 $(LIBFTPP_SHARED):
 	@echo "Compilation de LIBFTPP en bibliothèque partagée..."
