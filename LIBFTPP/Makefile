@@ -46,7 +46,7 @@ ifneq ($(wildcard $(INC_DIR)),)
 endif
 
 # Trouver tous les fichiers .cpp récursivement
-SRCS = $(shell find $(SRC_DIR) -name "*.cpp" 2>/dev/null)
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 # Si pas de src/ trouvé, utiliser wildcard à la racine
 ifeq ($(SRCS),)
