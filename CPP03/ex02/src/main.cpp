@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-// Helper compatible C++98 pour afficher un en-tête décoré
 static std::string pad_line(const std::string& title) {
     std::string line;
     line += "+";
