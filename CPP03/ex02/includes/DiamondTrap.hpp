@@ -7,7 +7,7 @@
 
 class DiamondTrap : public FragTrap, public ScavTrap {
 private:
-    std::string _name; // doit avoir le même nom que ClapTrap::_name si ClapTrap utilise _name
+    std::string _name;
 
 public:
     DiamondTrap(const std::string& name);
