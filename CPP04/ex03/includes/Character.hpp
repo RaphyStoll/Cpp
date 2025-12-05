@@ -2,26 +2,22 @@
 # define CHARACTER_HPP
 
 # include "ICharacter.hpp"
-# include "AMateria.hpp" // Need full definition for AMateria* _inventory[4]
+# include "AMateria.hpp"
 
 class Character : public ICharacter
 {
 private:
-	std::string _name;
-	AMateria*   _inventory[4];
-	int         _equippedCount; // Keep track of how many slots are filled
+	std::string		_name;
+	AMateria*		_inventory[4];
+	int				_equippedCount;
+	static const int	MAX_FLOOR_MATERIAS = 100;
+	AMateria*			_floorMaterias[MAX_FLOOR_MATERIAS];
+	int					_floorCount;
 
-	// For unequipped Materias to prevent memory leaks
-	// The prompt says "Occupez-vous des Materias laissées au sol par votre personnage comme vous le sentez."
-	// A simple array with a fixed max size for dropped items.
-	static const int MAX_FLOOR_MATERIAS = 100; // Arbitrary limit
-	AMateria*   _floorMaterias[MAX_FLOOR_MATERIAS];
-	int         _floorCount;
-
-	void _initInventory();
-	void _clearInventory();
-	void _copyInventory(const Character& other);
-	void _clearFloorMaterias();
+	void	_initInventory();
+	void	_clearInventory();
+	void	_copyInventory(const Character& other);
+	void	_clearFloorMaterias();
 
 public:
 	Character(std::string const & name);

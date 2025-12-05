@@ -3,7 +3,6 @@
 
 # include <string>
 
-// Forward declaration for AMateria to avoid circular dependency
 class AMateria;
 
 class ICharacter

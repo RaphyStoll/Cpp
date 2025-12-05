@@ -7,12 +7,12 @@
 class MateriaSource : public IMateriaSource
 {
 private:
-	AMateria* _learnedMaterias[4];
-	int       _learnedCount;
+	AMateria*	_learnedMaterias[4];
+	int			_learnedCount;
 
-	void _initLearnedMaterias();
-	void _clearLearnedMaterias();
-	void _copyLearnedMaterias(const MateriaSource& other);
+	void	_initLearnedMaterias();
+	void	_clearLearnedMaterias();
+	void	_copyLearnedMaterias(const MateriaSource& other);
 
 public:
 	MateriaSource();
