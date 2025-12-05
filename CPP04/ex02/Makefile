@@ -1,4 +1,4 @@
-NAME = CPP04
+NAME = Abstract
 CC = c++
 CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
 INCLUDE = includes
