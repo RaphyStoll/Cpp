@@ -1,4 +1,4 @@
-#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 #include <iostream>
 #include <string>
 
@@ -20,41 +20,40 @@ static std::string pad_line(const std::string& title) {
 int main()
 {
     std::cout << std::endl;
-    std::cout << pad_line("FRAGTRAP TEST") << std::endl;
+    std::cout << pad_line("DIAMONDTRAP TEST") << std::endl;
 
-    FragTrap f("Robo");
+    DiamondTrap d("Popo");
+
+    std::cout << std::endl;
+    std::cout << pad_line("IDENTITY") << std::endl;
+    d.whoAmI();
 
     std::cout << std::endl;
     std::cout << pad_line("ACTIONS") << std::endl;
     std::cout << "-> attack() :" << std::endl;
-    f.attack("target");
+    d.attack("badguy");
     std::cout << "-> takeDamage(20) :" << std::endl;
-    f.takeDamage(20);
+    d.takeDamage(20);
     std::cout << "-> beRepaired(10) :" << std::endl;
-    f.beRepaired(10);
+    d.beRepaired(10);
     std::cout << "-> highFivesGuys() :" << std::endl;
-    f.highFivesGuys();
+    d.highFivesGuys();
+    std::cout << "-> guardGate() :" << std::endl;
+    d.guardGate();
 
     std::cout << std::endl;
     std::cout << pad_line("COPY & ASSIGNMENT") << std::endl;
     std::cout << "- Copy constructor:" << std::endl;
-    FragTrap copy(f);
+    DiamondTrap copy(d);
+    copy.whoAmI();
 
     std::cout << "- Assignment operator:" << std::endl;
-    FragTrap assigned("Tmp");
-    assigned = f;
+    DiamondTrap assigned("Tmp");
+    assigned = d;
+    assigned.whoAmI();
 
     std::cout << std::endl;
-    std::cout << pad_line("MULTIPLE FRAGTRAP") << std::endl;
-    FragTrap f1("Alpha");
-    FragTrap f2("Beta");
-    f1.attack("enemy1");
-    f2.attack("enemy2");
-    f1.highFivesGuys();
-    f2.highFivesGuys();
-
-    std::cout << std::endl;
-    std::cout << "All FragTrap tests completed." << std::endl;
+    std::cout << "All DiamondTrap tests completed." << std::endl;
     std::cout << std::endl;
     return 0;
 }

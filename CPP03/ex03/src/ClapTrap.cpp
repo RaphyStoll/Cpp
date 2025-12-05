@@ -10,15 +10,14 @@
  *
  * @param name nom du ClapTrap
  */
-ClapTrap::ClapTrap(const std::string& name) : _name(name), _hit_points(10), _energy_points(10), _attack_damage(0) {
+ClapTrap::ClapTrap(const std::string& name) 
+	: _name(name), _hit_points(10), _energy_points(10), _attack_damage(0) {
 	std::cout << "ClapTrap " << _name << " constructed! (HP: " << _hit_points 
 			  << ", Energy: " << _energy_points << ", Attack: " << _attack_damage << ")" << std::endl;
 	print_debug("ClapTrap object created");
 }
 
-/**
- * @brief Destructeur
- */
+// Destructeur
 ClapTrap::~ClapTrap(void) {
 	std::cout << "ClapTrap " << _name << " destroyed!" << std::endl;
 	print_debug("ClapTrap object deleted");
@@ -31,7 +30,8 @@ ClapTrap::~ClapTrap(void) {
  *
  * @param other ClapTrap source
  */
-ClapTrap::ClapTrap(const ClapTrap& other) : _name(other._name), _hit_points(other._hit_points), 
+ClapTrap::ClapTrap(const ClapTrap& other) 
+	: _name(other._name), _hit_points(other._hit_points), 
 	  _energy_points(other._energy_points), _attack_damage(other._attack_damage) {
 	std::cout << "ClapTrap " << _name << " copied!" << std::endl;
 	print_debug("ClapTrap copy constructor called");
@@ -39,7 +39,7 @@ ClapTrap::ClapTrap(const ClapTrap& other) : _name(other._name), _hit_points(othe
 
 /**
  * @brief Opérateur d'assignation
- * 
+ *
  * Copie les attributs depuis `other` si ce n'est pas la même instance.
  */
 ClapTrap& ClapTrap::operator=(const ClapTrap& other) {
@@ -127,5 +127,6 @@ void ClapTrap::beRepaired(unsigned int amount) {
 	_energy_points--;
 	_hit_points += amount;
 	std::cout << "ClapTrap " << _name << " repairs itself for " << amount 
-			  << " HP! (HP: " << _hit_points << ", Energy left: " << _energy_points << ")" << std::endl;
+			  << " HP! (HP: " << _hit_points << ", Energy left: "
+			  << _energy_points << ")" << std::endl;
 }
