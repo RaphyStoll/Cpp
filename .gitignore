@@ -6,6 +6,7 @@
 *.so
 *.dylib
 *.o
+*.DS_Store
 
 #output
 test_logger

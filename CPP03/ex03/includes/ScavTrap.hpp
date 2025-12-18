@@ -13,6 +13,10 @@
  * `guardGate()`.
  */
 class ScavTrap : virtual public ClapTrap {
+	protected:
+		static const unsigned int	_default_hit_points = 100;
+		static const unsigned int	_default_energy_points = 100;
+		static const unsigned int	_default_attack_damage = 30;
 	public:
 		// Constructeur avec nom
 		ScavTrap(const std::string& name);
