@@ -80,19 +80,21 @@ void MateriaSource::learnMateria(AMateria* m)
 	if (_learnedCount >= 4)
 	{
 		std::cout << "MateriaSource is full. Cannot learn " << m->getType() << "." << std::endl;
+		delete m;
 		return;
 	}
 	for (int i = 0; i < 4; ++i)
 	{
 		if (_learnedMaterias[i] == NULL)
 		{
-			_learnedMaterias[i] = m->clone();
+			_learnedMaterias[i] = m;
 			_learnedCount++;
 			std::cout << "MateriaSource learned " << m->getType() << " in slot " << i << "." << std::endl;
 			return;
 		}
 	}
 	std::cout << "MateriaSource is full (fallback check). Cannot learn " << m->getType() << "." << std::endl;
+	delete m;
 }
 
 AMateria* MateriaSource::createMateria(std::string const & type)
