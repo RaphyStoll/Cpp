@@ -5,7 +5,7 @@
 #include <cstddef>
 
 namespace libftpp {
-namespace StringUtils {
+namespace str {
 
 class StringUtils {
 private:

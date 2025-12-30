@@ -27,24 +27,24 @@ std::string sockaddr_to_string(const struct sockaddr* sa, socklen_t salen, bool 
 // -----------------------------------------------------------------------------
 class Fd {
 private:
-    int _fd;
+	int _fd;
 
-    Fd(const Fd& other);
-    Fd& operator=(const Fd& other);
+	Fd(const Fd& other);
+	Fd& operator=(const Fd& other);
 
 public:
-    Fd();                 // fd = -1
-    explicit Fd(int fd);  // prend ownership
-    ~Fd();                // close si valid
+	Fd();				 // fd = -1
+	explicit Fd(int fd);  // prend ownership
+	~Fd();				// close si valid
 
-    bool valid() const;
-    int  get() const;
+	bool valid() const;
+	int  get() const;
 
-    // Remplace le fd actuel (ferme l'ancien si besoin)
-    void reset(int fd = -1);
+	// Remplace le fd actuel (ferme l'ancien si besoin)
+	void reset(int fd = -1);
 
-    // Donne le fd à l'appelant (ne fermera plus)
-    int  release();
+	// Donne le fd à l'appelant (ne fermera plus)
+	int  release();
 };
 }
 }

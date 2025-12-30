@@ -21,7 +21,7 @@ const std::string& HttpRequest::getTarget() const { return _target; }
 const std::string& HttpRequest::getVersion() const { return _version; }
 
 std::string HttpRequest::normKey(const std::string& k) {
-	return StringUtils::StringUtils::toLower(StringUtils::StringUtils::trim(k));
+	return str::StringUtils::toLower(str::StringUtils::trim(k));
 }
 
 std::string HttpRequest::normalizeHeaderKey(const std::string& key) {
@@ -29,7 +29,7 @@ std::string HttpRequest::normalizeHeaderKey(const std::string& key) {
 }
 
 bool HttpRequest::parseRequestLine(const std::string& line) {
-	std::string s = StringUtils::StringUtils::trim(line);
+	std::string s = str::StringUtils::trim(line);
 	if (s.empty())
 		return false;
 
@@ -83,7 +83,7 @@ bool HttpRequest::parseHeaderLine(const std::string& line) {
 	std::string raw_val = line.substr(pos + 1);
 
 	std::string key = normalizeHeaderKey(raw_key);
-	std::string val = StringUtils::StringUtils::trim(raw_val);
+	std::string val = str::StringUtils::trim(raw_val);
 
 	if (key.empty())
 		return false;
@@ -111,10 +111,10 @@ bool HttpRequest::contentLength(size_t& out) const {
 		return false;
 
 	std::string v = getHeader("content-length", "");
-	v = StringUtils::StringUtils::trim(v);
+	v = str::StringUtils::trim(v);
 
 	size_t tmp = 0;
-	if (!StringUtils::StringUtils::parse_size_t(v, tmp))
+	if (!str::StringUtils::parse_size_t(v, tmp))
 		return false;
 
 	out = tmp;

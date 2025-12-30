@@ -3,7 +3,7 @@
 #include <cctype>
 #include <limits>
 
-using libftpp::StringUtils::StringUtils;
+using libftpp::str::StringUtils;
 
 bool StringUtils::is_space(unsigned char c) {
 	return std::isspace(c) != 0;
@@ -46,7 +46,6 @@ std::vector<std::string> StringUtils::split(const std::string& s, char delim, si
 
 	for (size_t i = 0; i < s.size(); ++i) {
 		if (s[i] == delim) {
-			// si limit != 0, on garde le dernier morceau pour "le reste"
 			if (limit != 0 && (parts + 1) >= (limit - 1)) {
 				break;
 			}
@@ -138,4 +137,3 @@ std::string StringUtils::toUpper(const std::string& s) {
     }
     return out;
 }
-
