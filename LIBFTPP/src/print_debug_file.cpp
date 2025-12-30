@@ -12,7 +12,7 @@
  *
  * @param filename nom du fichier de log
  */
-DebugLogger::DebugLogger(const std::string& filename) 
+libftpp::debug::DebugLogger::DebugLogger(const std::string& filename) 
 	: _filename(filename) {
 	#ifdef DEBUG
 		// Effacer le fichier à la création du logger
@@ -26,7 +26,7 @@ DebugLogger::DebugLogger(const std::string& filename)
  *
  * Ne fait rien de spécifique mais est fourni pour la clarté.
  */
-DebugLogger::~DebugLogger() {
+libftpp::debug::DebugLogger::~DebugLogger() {
 }
 
 /**
@@ -34,7 +34,7 @@ DebugLogger::~DebugLogger() {
  *
  * @param message message à écrire dans le fichier
  */
-void DebugLogger::log(const std::string& message) {
+void libftpp::debug::DebugLogger::log(const std::string& message) {
 	#ifdef DEBUG
 		std::ofstream outfile(_filename.c_str(), std::ios::app);
 		if (!outfile)
@@ -50,7 +50,7 @@ void DebugLogger::log(const std::string& message) {
 /**
  * @brief Efface le contenu du fichier de log (mode trunc)
  */
-void DebugLogger::clear() {
+void libftpp::debug::DebugLogger::clear() {
 	#ifdef DEBUG
 		std::ofstream outfile(_filename.c_str(), std::ios::trunc);
 		outfile.close();
@@ -65,7 +65,7 @@ void DebugLogger::clear() {
  *
  * @param message message à écrire dans debug.log
  */
-void DebugLogger::debug(const std::string& message) {
+void libftpp::debug::DebugLogger::debug(const std::string& message) {
 	#ifdef DEBUG
 		static bool first = true;
         

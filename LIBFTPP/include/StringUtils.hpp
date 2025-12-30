@@ -5,6 +5,7 @@
 #include <cstddef>
 
 namespace libftpp {
+namespace StringUtils {
 
 class StringUtils {
 private:
@@ -45,4 +46,5 @@ public:
 	// Idem pour size_t.
 	static bool parse_size_t(const std::string& s, size_t& out);
 };
+}
 }

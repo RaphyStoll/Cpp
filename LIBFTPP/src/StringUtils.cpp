@@ -3,7 +3,7 @@
 #include <cctype>
 #include <limits>
 
-using libftpp::StringUtils;
+using libftpp::StringUtils::StringUtils;
 
 bool StringUtils::is_space(unsigned char c) {
 	return std::isspace(c) != 0;

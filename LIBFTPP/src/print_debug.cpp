@@ -10,5 +10,5 @@
  */
 void print_debug(const std::string str)
 {
-	DebugLogger::debug(str);
+	libftpp::debug::DebugLogger::debug(str);
 }

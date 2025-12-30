@@ -5,6 +5,7 @@
 #include <cstddef>
 
 namespace libftpp {
+namespace HttpRequest {
 
 class HttpRequest {
 private:
@@ -58,5 +59,5 @@ public:
 	// Retourne true si présent et valide (chiffres uniquement), false sinon.
 	bool contentLength(size_t& out) const;
 };
-
+}
 }

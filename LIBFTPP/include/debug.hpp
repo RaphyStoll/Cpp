@@ -1,17 +1,10 @@
-#ifndef DEBUG_HPP
-#define DEBUG_HPP
+#pragma once
 
 #include "config.hpp"
 #include <string>
 
-/**
- * @file debug.hpp
- * @brief Outils de journalisation (debug) pour la bibliothèque
- *
- * Fournit une classe simple `DebugLogger` permettant d'écrire des messages
- * dans des fichiers de log et une fonction legacy `print_debug` pour
- * compatibilité avec l'ancien code.
- */
+namespace libftpp {
+namespace debug {
 
 /**
  * @brief Classe simple pour gérer un fichier de log
@@ -24,7 +17,7 @@
 class DebugLogger {
 	private:
 		std::string _filename;
-    
+
 	public:
 		/**
 		 * @brief Constructeur
@@ -32,9 +25,7 @@ class DebugLogger {
 		 */
 		DebugLogger(const std::string& filename);
 
-		/**
-		 * @brief Destructeur
-		 */
+		// @brief Destructeur
 		~DebugLogger();
         
 		/**
@@ -43,10 +34,8 @@ class DebugLogger {
 		 */
 		void log(const std::string& message);
 
-		/**
-		 * @brief Efface le contenu du fichier de log (mode trunc)
-		 */
-		void clear(); // Efface le fichier
+		// Efface le contenu du fichier de log (mode trunc)
+		void clear();
         
 		/**
 		 * @brief Méthode statique pour écrire dans le fichier global `debug.log`
@@ -66,4 +55,5 @@ class DebugLogger {
  */
 void print_debug(const std::string str);
 
-#endif
+}
+}

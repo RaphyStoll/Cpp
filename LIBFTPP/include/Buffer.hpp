@@ -4,6 +4,7 @@
 #include <cstddef>
 
 namespace libftpp {
+namespace Buffer {
 
 class Buffer {
 	private:
@@ -67,4 +68,6 @@ class Buffer {
 		// consomme le tout + CRLFCRLF, puis retourne true. Sinon retourne false.
 		bool		readUntilCRLFCRLF(std::string& out);
 };
+
+}
 }

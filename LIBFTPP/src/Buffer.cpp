@@ -1,6 +1,6 @@
 #include "../include/Buffer.hpp"
 
-using libftpp::Buffer;
+using libftpp::Buffer::Buffer;
 
 void Buffer::compact_if_needed() {
 	const size_t kMin = 8 * 1024; 
@@ -43,7 +43,7 @@ size_t Buffer::size() const {
 }
 
 void Buffer::clear() {
-	_buf.clear(); // selui de strin
+	_buf.clear();
 	_off = 0;
 	_overflow = false;
 }
