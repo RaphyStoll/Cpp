@@ -26,3 +26,6 @@ std::string toUpper(std::string str);
  * @return std::string chaîne convertie en minuscules
  */
 std::string toLower(std::string str);
+
+//helper pour titre de test
+std::string pad_line(const std::string& title);
