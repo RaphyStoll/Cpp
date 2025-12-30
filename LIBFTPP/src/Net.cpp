@@ -1,14 +1,13 @@
-// File: src/Net.cpp
 #include "../include/Net.hpp"
 
-#include <unistd.h>     // close
-#include <fcntl.h>      // fcntl
-#include <cerrno>       // errno
-#include <cstring>      // memset
+#include <unistd.h>
+#include <fcntl.h>
+#include <cerrno>
+#include <cstring>
 
-#include <netinet/tcp.h> // TCP_NODELAY
-#include <arpa/inet.h>   // inet_ntop
-#include <netdb.h>       // getnameinfo (optionnel mais pratique)
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
 namespace libftpp {
 namespace net {
@@ -60,7 +59,6 @@ static std::string ipv4_to_string(const struct sockaddr_in* in, bool with_port) 
     unsigned short port = ntohs(in->sin_port);
     std::string s(buf);
     s += ":";
-    // C++98: pas std::to_string
     char pbuf[16];
     std::snprintf(pbuf, sizeof(pbuf), "%u", (unsigned int)port);
     s += pbuf;
@@ -90,8 +88,6 @@ std::string sockaddr_to_string(const struct sockaddr* sa, socklen_t salen, bool 
     if (!sa || salen == 0)
         return std::string();
 
-    // Option 1: getnameinfo (gère IPv4/IPv6 proprement)
-    // Si tu préfères éviter getnameinfo, tu peux commenter ce bloc et utiliser inet_ntop.
     {
         char host[NI_MAXHOST];
         char serv[NI_MAXSERV];
@@ -101,7 +97,6 @@ std::string sockaddr_to_string(const struct sockaddr* sa, socklen_t salen, bool 
             if (!with_port)
                 return std::string(host);
 
-            // Format IPv6 avec crochets si besoin
             if (sa->sa_family == AF_INET6) {
                 std::string s = "[";
                 s += host;
@@ -114,10 +109,8 @@ std::string sockaddr_to_string(const struct sockaddr* sa, socklen_t salen, bool 
             s += serv;
             return s;
         }
-        // sinon on fallback inet_ntop ci-dessous
     }
 
-    // Fallback inet_ntop
     if (sa->sa_family == AF_INET) {
         const struct sockaddr_in* in = (const struct sockaddr_in*)sa;
         return ipv4_to_string(in, with_port);
