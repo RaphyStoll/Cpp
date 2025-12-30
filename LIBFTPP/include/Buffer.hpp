@@ -67,5 +67,4 @@ class Buffer {
 		// consomme le tout + CRLFCRLF, puis retourne true. Sinon retourne false.
 		bool		readUntilCRLFCRLF(std::string& out);
 };
-
 }
