@@ -1,5 +1,4 @@
-#ifndef BUREAUCRAT_HPP
-# define BUREAUCRAT_HPP
+#pragma once
 
 # include <iostream>
 # include <string>
@@ -12,7 +11,6 @@ class Bureaucrat
 		int					_grade;
 
 	public:
-		// Orthodox Canonical Form
 		Bureaucrat();
 		Bureaucrat(std::string const &name, int grade);
 		Bureaucrat(Bureaucrat const &src);
@@ -20,16 +18,14 @@ class Bureaucrat
 
 		Bureaucrat &operator=(Bureaucrat const &rhs);
 
-		// Getters
 		std::string const	&getName() const;
 		int					getGrade() const;
 
-		// Methods
 		void	incrementGrade();
 		void	decrementGrade();
+
 		void	signForm(class Form &form);
 
-		// Exceptions
 		class GradeTooHighException : public std::exception
 		{
 			public:
@@ -44,5 +40,3 @@ class Bureaucrat
 };
 
 std::ostream &operator<<(std::ostream &o, Bureaucrat const &rhs);
-
-#endif

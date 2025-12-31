@@ -1,5 +1,4 @@
-#ifndef FORM_HPP
-# define FORM_HPP
+#pragma once
 
 # include <iostream>
 # include <string>
@@ -16,7 +15,6 @@ class Form
 		const int			_gradeToExecute;
 
 	public:
-		// Orthodox Canonical Form
 		Form();
 		Form(std::string const &name, int gradeToSign, int gradeToExecute);
 		Form(Form const &src);
@@ -24,16 +22,13 @@ class Form
 
 		Form &operator=(Form const &rhs);
 
-		// Getters
 		std::string const	&getName() const;
 		bool				getIsSigned() const;
 		int					getGradeToSign() const;
 		int					getGradeToExecute() const;
 
-		// Methods
 		void	beSigned(Bureaucrat const &bureaucrat);
 
-		// Exceptions
 		class GradeTooHighException : public std::exception
 		{
 			public:
@@ -48,5 +43,3 @@ class Form
 };
 
 std::ostream &operator<<(std::ostream &o, Form const &rhs);
-
-#endif
