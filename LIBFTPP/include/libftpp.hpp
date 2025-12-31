@@ -1,7 +1,12 @@
 #pragma once
 
-#include "debug.hpp"
 #include <string>
-
-//helper pour titre de test
-std::string pad_line(const std::string& title);
+#include "debug.hpp"
+#include "DisplayFormatter.hpp"
+#include "StringUtils.hpp"
+#include "Clock.hpp"
+#include "Buffer.hpp"
+#include "Net.hpp"
+#include "HttpRequest.hpp"
+#include "ConfigTokenizer.hpp"
+#include "config.hpp"

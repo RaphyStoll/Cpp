@@ -11,8 +11,8 @@ class StringUtils {
 private:
 	// Classe statique : constructeurs privés
 	StringUtils() {};
-	StringUtils(const StringUtils& other) {};
-	StringUtils& operator=(const StringUtils& other) {};
+	StringUtils(const StringUtils& other) { (void)other; };
+	StringUtils& operator=(const StringUtils& other) { (void)other; return *this; };
 	~StringUtils() {};
 
 	static bool is_space(unsigned char c);
