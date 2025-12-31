@@ -7,6 +7,7 @@
 *.dylib
 *.o
 *.DS_Store
+*.d
 
 #output
 test_logger
@@ -31,3 +32,8 @@ Abstract
 BurningMan
 leRecap
 Bureaucrat
+Form
+28B
+home_shrubbery
+Intern
+Convert
