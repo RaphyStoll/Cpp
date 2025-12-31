@@ -1,0 +1,66 @@
+<coding_guidelines>
+    <standard>
+        <language>C++98</language>
+        <flags>-Wall -Wextra -Werror -std=c++98</flags>
+        <compiler>c++</compiler>
+    </standard>
+
+    <project_structure>
+        <directories>
+            <source>src/</source>
+            <include>include/</include>
+            <objects>obj/</objects>
+        </directories>
+        <makefile>
+            <dependency_tracking>-MMD -MP</dependency_tracking>
+            <clean_rules>clean (obj), fclean (name), re</clean_rules>
+        </makefile>
+    </project_structure>
+
+    <code_style>
+        <headers>Use #pragma once instead of ifndef guards</headers>
+        <classes>
+            <form>Orthodox Canonical Form (Default Const, Copy Const, Assign Op, Destructor)</form>
+            <naming_abstract>Prefix abstract classes with 'A' (e.g., AForm)</naming_abstract>
+            <naming_interface>Prefix interfaces with 'I'</naming_interface>
+        </classes>
+        <comments>Minimal. Only TODOs or critical in french explanations. No redundant documentation.</comments>
+        <formatting>
+            <indentation>Tabs (4 spaces visual)</indentation>
+            <brackets>
+                <functions>Allman style (new line)</functions>
+                <control_structures>Same line (K&R style) for if, for, while, etc.</control_structures>
+            </brackets>
+            <inline_methods>Single-line methods defined in .cpp or marked inline in class definition.</inline_methods>
+        </formatting>
+		<codestyle>
+			use libftpp or implemnt the utils in libftpp
+			in the implementation methods a methods whit one line = inligne methods
+		</codestyle>
+    </code_style>
+
+    <libraries>
+        <libftpp>
+            <integration>Dynamic or static linking via Makefile</integration>
+            <path>../../LIBFTPP</path>
+            <include_flag>-I../../LIBFTPP/include</include_flag>
+            <link_flag>-L../../LIBFTPP -lftpp -Wl,-rpath,../../LIBFTPP</link_flag>
+            <usage>
+                <output>Use libftpp::DisplayFormatter for operator&lt;&lt; overloads</output>
+                <tests>Use pad_line("Title") for test separation in main</tests>
+                <header>Include "libftpp.hpp" as master header</header>
+                <extension>If utility missing, add to LIBFTPP instead of local project</extension>
+                <workflow>Assess reusability score for new methods. Discuss adding to LIBFTPP if useful.</workflow>
+            </usage>
+        </libftpp>
+    </libraries>
+
+	<tests>
+		use te displayformatter class or implement a new method on this class
+		and test all the theme is nessecerly test whith walgrind for leaks
+	</tests>
+    <workflow>
+        <file_management>Use 'cp -R' when extending previous exercises to preserve history.</file_management>
+        <testing>Always implement a main.cpp covering success cases, failure cases, and exception handling.</testing>
+    </workflow>
+</coding_guidelines>
