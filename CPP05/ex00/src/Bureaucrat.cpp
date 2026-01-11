@@ -21,7 +21,6 @@ Bureaucrat &Bureaucrat::operator=(Bureaucrat const &rhs)
 {
 	if (this != &rhs)
 	{
-		// _name is const, so we can't assign it. Only grade changes.
 		this->_grade = rhs.getGrade();
 	}
 	return *this;
