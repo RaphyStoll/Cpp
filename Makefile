@@ -184,5 +184,13 @@ fclean:
 
 re: fclean all
 
+pull-libftpp:
+	git fetch libftpp
+	git subtree pull --prefix=lib/LIBFTPP libftpp main --squash
+
+push-libftpp:
+	git subtree push --prefix=lib/LIBFTPP libftpp main
+
+
 .PHONY: all clean fclean re \
 		CPP00 CPP01 CPP02 CPP03 CPP04 CPP05 CPP06 CPP07 CPP08 CPP09
