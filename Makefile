@@ -184,6 +184,9 @@ fclean:
 
 re: fclean all
 
+init-subtree-libftpp:
+	git subtree add --prefix=LIBFTPP libftpp main --squash
+
 pull-libftpp:
 	git fetch libftpp
 	git subtree pull --prefix=lib/LIBFTPP libftpp main --squash
