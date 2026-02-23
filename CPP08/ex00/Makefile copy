@@ -1,0 +1,216 @@
+GREEN = \033[0;32m
+RED = \033[0;31m
+BLUE = \033[0;34m
+YELLOW = \033[0;33m
+NC = \033[0m
+
+NAME        = Webserv
+
+CPP         = c++
+CPPFLAGS    = -Wall -Wextra -Werror -std=c++98 -MMD -MP -g3
+
+LIBFT_DIR   = lib/LIBFTPP
+LIBFT_A     = $(LIBFT_DIR)/libftpp.a
+INCFLAGS    = -I include -I $(LIBFT_DIR)/include
+
+SRC_DIR     = src
+OBJ_DIR     = obj
+TEST_DIR	= test
+
+SRCS        = $(shell find $(SRC_DIR) -name "*.cpp")
+OBJS        = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+DEPS        = $(OBJS:.o=.d)
+# pour les test du parsing
+TEST_NAME = test_request
+TEST_SRC    = $(TEST_DIR)/testRequest.cpp
+TEST_OBJ    = $(OBJ_DIR)/test/testRequest.o
+OBJS_NO_MAIN = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
+
+TOTAL_OBJS  = $(words $(SRCS))
+PROGRESS_FILE = $(OBJ_DIR)/.progress
+PROGBAR_LEN = 40
+
+RM          = rm -rf
+
+# Docker Compose command ("docker compose" on recent setups, "docker-compose" on older ones)
+COMPOSE     := $(shell \
+	if docker compose version > /dev/null 2>&1; then \
+		echo 'docker compose'; \
+	elif command -v docker-compose > /dev/null 2>&1; then \
+		echo 'docker-compose'; \
+	else \
+		echo ''; \
+	fi)
+
+all: $(NAME)
+
+
+$(NAME): $(LIBFT_A) $(OBJS)
+	@if [ -z "$(strip $(OBJS))" ]; then \
+		echo "Error: no sources found in $(SRC_DIR)/ (*.cpp)."; \
+		echo "Hint: add at least $(SRC_DIR)/main.cpp with an int main()."; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)[Webserv] All objects compiled!$(NC)"
+	@$(CPP) $(CPPFLAGS) $(OBJS) $(LIBFT_A) -o $(NAME)
+	@echo "$(BLUE)Linking $(NAME)...$(NC)"
+	@echo "$(GREEN)all is DONE$(NC)"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@$(CPP) $(CPPFLAGS) $(INCFLAGS) -c $< -o $@
+	@count=$$(cat $(PROGRESS_FILE) 2>/dev/null || echo 0); \
+	total=$(TOTAL_OBJS); [ $$total -le 0 ] && total=1; \
+	[ $$count -ge $$total ] && count=0; \
+	count=$$((count+1)); echo $$count > $(PROGRESS_FILE); \
+	percent=$$(( (count*100)/total )); \
+	bar_len=$(PROGBAR_LEN); filled=$$(( (percent*bar_len)/100 )); \
+	bar=""; i=0; while [ $$i -lt $$filled ]; do bar="$$bar#"; i=$$((i+1)); done; \
+	printf "\r[%-*s] %3d%% (%d/%d) Compiling: %s" $$bar_len "$$bar" $$percent $$count $$total "$<"; \
+	[ $$count -eq $$total ] && printf "\n" || true
+
+$(LIBFT_A):
+	$(MAKE) -C $(LIBFT_DIR) static
+
+# ==================== TEST TARGETS ====================
+test: $(LIBFT_A) $(OBJS_NO_MAIN) $(TEST_OBJ)
+		$(CPP) $(CPPFLAGS) $(OBJS_NO_MAIN) $(TEST_OBJ) $(LIBFT_A) -o $(TEST_NAME)
+		@echo "\n Test binary built: ./$(TEST_NAME)\n"
+
+$(OBJ_DIR)/test/%.o: $(TEST_DIR)/%.cpp
+		@mkdir -p $(dir $@)
+		$(CPP) $(CPPFLAGS) $(INCFLAGS) -c $< -o $@
+
+test-run: test
+		@echo "\n========== Running Tests ==========\n"
+		./$(TEST_NAME)
+
+test-clean:
+		$(RM) $(TEST_NAME) $(OBJ_DIR)/test
+# ======================================================
+
+clean:
+	@echo "$(RED)Cleaning object files...$(NC)"
+	$(RM) $(OBJ_DIR)
+	$(MAKE) -C $(LIBFT_DIR) clean > /dev/null 2>&1
+	@echo "\033[32m[webserv] Clean done!\033[0m"
+
+fclean: clean
+	@echo "$(RED)Cleaning executable and libraries...$(NC)"
+	$(RM) $(NAME)  $(TEST_NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean > /dev/null 2>&1
+	@echo "\033[32m[webserv] Full clean done!\033[0m"
+
+re: fclean all
+
+-include $(DEPS)
+
+colima-start:
+	@if command -v colima > /dev/null; then \
+		colima status > /dev/null 2>&1 || colima start; \
+	fi
+
+up: colima-start
+	@if [ -z "$(COMPOSE)" ]; then echo "Error: neither 'docker compose' nor 'docker-compose' found."; exit 1; fi
+	$(COMPOSE) up -d --build
+
+down:
+	@if [ -z "$(COMPOSE)" ]; then echo "Error: neither 'docker compose' nor 'docker-compose' found."; exit 1; fi
+	$(COMPOSE) down
+
+join:
+	docker-compose up -d
+	docker exec -it webserv_tester /bin/zsh
+
+logs:
+	@if [ -z "$(COMPOSE)" ]; then echo "Error: neither 'docker compose' nor 'docker-compose' found."; exit 1; fi
+	$(COMPOSE) logs -f
+
+re-docker: down up
+
+pull-libftpp:
+	git fetch libftpp
+	git subtree pull --prefix=lib/LIBFTPP libftpp main --squash
+
+push-libftpp:
+	git subtree push --prefix=lib/LIBFTPP libftpp main
+
+siege:
+	siege --file=staging-urls.txt --internet --verbose --reps=200 --concurrent=25 --no-parser
+
+siege_stress:
+	siege --benchmark --file=staging-urls.txt --concurrent=255 --time=30S
+
+siege_charge:
+	siege --internet --delay=1 --file=staging-urls.txt --concurrent=50 --reps=100 --verbose
+
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./Webserv config/raph.conf
+
+help:
+	@echo "$(YELLOW)Usage: make [TARGET]$(NC)"
+	@echo ""
+	@echo "$(BLUE)General Targets:$(NC)"
+	@echo "  $(GREEN)all$(NC)             Build the executable $(NAME)"
+	@echo "  $(GREEN)clean$(NC)           Remove object files"
+	@echo "  $(GREEN)fclean$(NC)          Remove object files and executable"
+	@echo "  $(GREEN)re$(NC)              Rebuild everything"
+	@echo ""
+	@echo "$(BLUE)Test Targets:$(NC)"
+	@echo "  $(GREEN)test$(NC)            Build the test executable $(TEST_NAME)"
+	@echo "  $(GREEN)test-run$(NC)        Build and run tests"
+	@echo "  $(GREEN)test-clean$(NC)      Remove test artifacts"
+	@echo ""
+	@echo "$(BLUE)Performance & Debugging:$(NC)"
+	@echo "  $(GREEN)siege$(NC)           Launch standard siege test"
+	@echo "  $(GREEN)siege_stress$(NC)    Launch stress test (benchmark mode, no delay)"
+	@echo "  $(GREEN)siege_charge$(NC)    Launch realistic load test (internet mode, with delay)"
+	@echo "  $(GREEN)valgrind$(NC)        Launch server with Valgrind (logs to valgrind.log)"
+	@echo ""
+	@echo "$(BLUE)Docker Targets:$(NC)"
+	@echo "  $(GREEN)up$(NC)              Start docker containers (with colima check)"
+	@echo "  $(GREEN)down$(NC)            Stop docker containers"
+	@echo "  $(GREEN)logs$(NC)            View docker logs"
+	@echo "  $(GREEN)join$(NC)            Join the webserv_tester container shell"
+	@echo "  $(GREEN)re-docker$(NC)       Restart docker containers"
+	@echo ""
+	@echo "$(BLUE)Git Subtree Targets:$(NC)"
+	@echo "  $(GREEN)pull-libftpp$(NC)    Pull updates for LIBFTPP subtree"
+	@echo "  $(GREEN)push-libftpp$(NC)    Push updates for LIBFTPP subtree"
+	@echo ""
+
+help_fr:
+	@echo "$(YELLOW)Utilisation: make [CIBLE]$(NC)"
+	@echo ""
+	@echo "$(BLUE)Cibles Générales:$(NC)"
+	@echo "  $(GREEN)all$(NC)             Compiler l'exécutable $(NAME)"
+	@echo "  $(GREEN)clean$(NC)           Supprimer les fichiers objets"
+	@echo "  $(GREEN)fclean$(NC)          Supprimer les fichiers objets et l'exécutable"
+	@echo "  $(GREEN)re$(NC)              Recompiler tout"
+	@echo ""
+	@echo "$(BLUE)Cibles de Test Unitaire:$(NC)"
+	@echo "  $(GREEN)test$(NC)            Compiler l'exécutable de test $(TEST_NAME)"
+	@echo "  $(GREEN)test-run$(NC)        Compiler et exécuter les tests"
+	@echo "  $(GREEN)test-clean$(NC)      Supprimer les artefacts de test"
+	@echo ""
+	@echo "$(BLUE)Performance & Débogage:$(NC)"
+	@echo "  $(GREEN)siege$(NC)           Lancer un test siege standard"
+	@echo "  $(GREEN)siege_stress$(NC)    Test de résistance (mode benchmark, sans délai)"
+	@echo "  $(GREEN)siege_charge$(NC)    Test de charge réaliste (mode internet, avec délai)"
+	@echo "  $(GREEN)valgrind$(NC)        Lancer le serveur avec Valgrind (logs dans valgrind.log)"
+	@echo ""	
+	@echo "$(BLUE)Cibles Docker:$(NC)"
+	@echo "  $(GREEN)up$(NC)              Démarrer les conteneurs docker (avec vérification colima)"
+	@echo "  $(GREEN)down$(NC)            Arrêter les conteneurs docker"
+	@echo "  $(GREEN)logs$(NC)            Voir les journaux docker"
+	@echo "  $(GREEN)join$(NC)            Rejoindre le shell du conteneur webserv_tester"
+	@echo "  $(GREEN)re-docker$(NC)       Redémarrer les conteneurs docker"
+	@echo ""
+	@echo "$(BLUE)Cibles Git Subtree:$(NC)"
+	@echo "  $(GREEN)pull-libftpp$(NC)    Récupérer les mises à jour pour le subtree LIBFTPP"
+	@echo "  $(GREEN)push-libftpp$(NC)    Pousser les mises à jour pour le subtree LIBFTPP"
+	@echo ""
+
+
+.PHONY: all clean fclean re colima-start up down join logs re-docker test-run test-clean help help_fr
