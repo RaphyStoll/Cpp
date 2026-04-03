@@ -34,7 +34,7 @@ bool BitcoinExchange::loadDatabase(const std::string& filename) {
     if (!file.is_open()) return false;
 
     std::string line;
-    std::getline(file, line); // header
+    std::getline(file, line);
 
     while (std::getline(file, line)) {
         size_t commaPos = line.find(',');
@@ -44,7 +44,7 @@ bool BitcoinExchange::loadDatabase(const std::string& filename) {
             trim(date);
             trim(rateStr);
             char* end;
-            float rate = std::strtof(rateStr.c_str(), &end);
+            float rate = static_cast<float>(std::strtod(rateStr.c_str(), &end));
             _database[date] = rate;
         }
     }
@@ -75,9 +75,10 @@ bool BitcoinExchange::isValidDate(const std::string& date) const {
 }
 
 bool BitcoinExchange::isValidValue(const std::string& valueStr, float& value) const {
+    if (valueStr.empty()) return false;
     char* end;
-    value = std::strtof(valueStr.c_str(), &end);
-    if (*end != '\0' && *end != 'f') return false; 
+    value = static_cast<float>(std::strtod(valueStr.c_str(), &end));
+    if (end == valueStr.c_str() || (*end != '\0' && *end != 'f')) return false; 
     return true;
 }
 
@@ -102,6 +103,12 @@ void BitcoinExchange::processInput(const std::string& inputFilename) const {
 
     std::string line;
     std::getline(file, line); // Skip header
+    trim(line);
+    if (line != "date | value") {
+        // Maybe it's a data line or bad header, process it later or just throw an error
+        file.clear();
+        file.seekg(0, std::ios::beg); // Restart from beginning!
+    }
 
     while (std::getline(file, line)) {
         if (line.empty()) continue;
