@@ -76,31 +76,31 @@ bool StringUtils::iequals(const std::string& a, const std::string& b) {
 }
 
 int StringUtils::stoi(const std::string &s) {
-    if (s.empty()) {
-        throw std::invalid_argument("StringUtils::stoi: Chaîne vide");
-    }
+	if (s.empty()) {
+		throw std::invalid_argument("StringUtils::stoi: Chaîne vide");
+	}
 
-    char* endptr = nullptr;
-    long val = std::strtol(s.c_str(), &endptr, 10);
+	char* endptr = nullptr;
+	long val = std::strtol(s.c_str(), &endptr, 10);
 
-    // 1. Vérifier si aucun chiffre n'a été trouvé
-    if (s.c_str() == endptr) {
-        throw std::invalid_argument("StringUtils::stoi: Aucun chiffre trouvé");
-    }
+	// 1. Vérifier si aucun chiffre n'a été trouvé
+	if (s.c_str() == endptr) {
+		throw std::invalid_argument("StringUtils::stoi: Aucun chiffre trouvé");
+	}
 
-    while (*endptr != '\0') {
-        if (!isspace(static_cast<unsigned char>(*endptr))) {
-            throw std::invalid_argument("StringUtils::stoi: Caractères non numériques détectés après le nombre");
-        }
-        endptr++;
-    }
+	while (*endptr != '\0') {
+		if (!isspace(static_cast<unsigned char>(*endptr))) {
+			throw std::invalid_argument("StringUtils::stoi: Caractères non numériques détectés après le nombre");
+		}
+		endptr++;
+	}
 
-    // 3. Vérifier les limites de l'entier
-    if (val < INT_MIN || val > INT_MAX) {
-        throw std::out_of_range("StringUtils::stoi: Valeur hors limites (int)");
-    }
+	// 3. Vérifier les limites de l'entier
+	if (val < INT_MIN || val > INT_MAX) {
+		throw std::out_of_range("StringUtils::stoi: Valeur hors limites (int)");
+	}
 
-    return static_cast<int>(val);
+	return static_cast<int>(val);
 }
 
 std::string StringUtils::itos(const int n) {
