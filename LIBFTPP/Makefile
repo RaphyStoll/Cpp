@@ -171,6 +171,21 @@ fclean: clean
 # Recompilation
 re: fclean all
 
+pull-libftpp:
+	git fetch libftpp
+	git subtree pull --prefix=lib/LIBFTPP libftpp main --squash
+
+push-libftpp:
+	git subtree push --prefix=lib/LIBFTPP libftpp main
+
+pr-libftpp:
+	@read -p "Nom de la branche pour la PR: " branch; \
+	git subtree push --prefix=lib/LIBFTPP libftpp $$branch; \
+	echo "$(GREEN)✅ Pushed to branch $$branch. Maintenant, va sur GitHub pour ouvrir la PR depuis cette branche !$(NC)"
+
+add-subtree:
+ git subtree add --prefix=LIBFTPP libftpp main --squash
+
 # Aide
 help:
 	@echo "$(BLUE)Available targets:$(NC)"
@@ -181,6 +196,11 @@ help:
 	@echo "  $(GREEN)fclean$(NC)   - Remove object files and libraries"
 	@echo "  $(GREEN)re$(NC)       - Recompile everything"
 	@echo "  $(GREEN)help$(NC)     - Show this help message"
+	@echo ""
+	@echo "$(BLUE)Git Subtree Targets:$(NC)"
+	@echo "  $(GREEN)pull-libftpp$(NC)    Pull updates for LIBFTPP subtree"
+	@echo "  $(GREEN)push-libftpp$(NC)    Push updates for LIBFTPP subtree"
+	@echo "  $(GREEN)pr-libftpp$(NC)      Push updates to a new branch for PR on LIBFTPP"
 	@echo ""
 	@echo "$(YELLOW)OS detected: $(UNAME_S)$(NC)"
 	@echo "$(YELLOW)Shared library extension: $(SHARED_EXT)$(NC)"
