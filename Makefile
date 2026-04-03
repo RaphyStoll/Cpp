@@ -173,14 +173,14 @@ re: fclean all
 
 pull-libftpp:
 	git fetch libftpp
-	git subtree pull --prefix=lib/LIBFTPP libftpp main --squash
+	git subtree pull --prefix=LIBFTPP libftpp main --squash
 
 push-libftpp:
-	git subtree push --prefix=lib/LIBFTPP libftpp main
+	git subtree push --prefix=LIBFTPP libftpp main
 
 pr-libftpp:
 	@read -p "Nom de la branche pour la PR: " branch; \
-	git subtree push --prefix=lib/LIBFTPP libftpp $$branch; \
+	git subtree push --prefix=LIBFTPP libftpp $$branch; \
 	echo "$(GREEN)✅ Pushed to branch $$branch. Maintenant, va sur GitHub pour ouvrir la PR depuis cette branche !$(NC)"
 
 
