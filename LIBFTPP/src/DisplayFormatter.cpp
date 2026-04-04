@@ -37,7 +37,7 @@ std::string DisplayFormatter::header(const std::string& title, int width) {
 	header += " |";
 	header += "\n";
 	header += line;
-	header += "\n";
+	header += "\n"; 
 	return header;
 }
 

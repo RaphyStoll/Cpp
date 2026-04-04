@@ -1,48 +1,42 @@
 #include "PmergeMe.hpp"
-#include "../../LIBFTPP/include/libftpp.hpp"
 
+
+#include <exception>
 #include <iostream>
-#include <vector>
+#include <ostream>
 
+
+//map et list interdit
 
 // bool parse_arg(char **argv)
 // {}
-void print_list(std::vector<int>& x, libftpp::debug::DebugLogger& _logger)
-{
-	for(unsigned int i = 0; i < x.size(); i++) {
-		_logger << x[i] << " ";
-		std::cout << x[i] << " ";
-	}
-	_logger << "EOF" << std::endl;
-	std::cout << "EOF" << std::endl;
-}
 
+// MACOS ./PmergeMe `jot -r 3000 1 100000 | tr '\n' ' '`
+// Linux ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`
 int main (int argc, char **argv)
 {
-	libftpp::debug::DebugLogger _logger("log");
-	logger l;
 	if (argc < 2) {
-		_logger << "ERROR: argc < 2 need a argument" << std::endl;
 		std::cerr << "Error usage: ./PmergeMe <arg1> <...>" << std::endl;
 		return 1;
 	}
-	std::vector<int> v;
-	for (unsigned int i = 1; i < (unsigned int)argc; i++) {
-		try {
-			_logger << libftpp::str::StringUtils::pad
-			v.push_back(libftpp::str::StringUtils::stoi(argv[i]));
-		}
-		catch (std::invalid_argument &e) {
-			_logger << argv[i] << " is invalid" << std::endl;
-			std::cerr << "Arg invalid" << std::endl;
-		}
-		catch (std::out_of_range &e) {
-			std::cerr << "out of range int MIN|MAX" << std::endl;
-			return 1;
-		}
+	try{
+		PmergeMe Pmerge(argc, argv);
+		Pmerge.run();
 	}
-	
-	print_list(v, _logger);
-
+	catch (PmergeMe::ParseError &e) {
+		std::cerr << e.what() << std::endl;
+		return 2;
+	}
+	catch (PmergeMe::NotSorted &e) {
+		std::cerr << e.what() << std::endl;
+		return 3;
+	}
+	catch (PmergeMe::StartSorted &e) {
+		return 0;
+	}
+	catch (std::exception &e) {
+		std::cerr << "Please use a more specific exception" << std::endl;
+		return 1;
+	}
 	return 0;
 }

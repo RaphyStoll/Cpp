@@ -95,19 +95,8 @@ def main():
         elif arg == "--doublon=on":
             allow_duplicates = True
 
-    executable = "ford_johnson_test"
+    executable = "PmergeMe"
 
-    # Compilation
-    if not os.path.exists(cpp_file):
-        print(f"Erreur: Le fichier '{cpp_file}' n'existe pas.")
-        sys.exit(1)
-
-    print(f"🔨 Compilation de {cpp_file} en C++98...")
-    compile_proc = subprocess.run(['g++', '-std=c++98', cpp_file, '-o', executable])
-    
-    if compile_proc.returncode != 0:
-        print("❌ Erreur de compilation !")
-        sys.exit(1)
 
     print(f"🚀 Tests (Taille: {size}, Infini: {infinite_mode}, Doublons: {allow_duplicates})")
     
