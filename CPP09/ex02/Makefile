@@ -1,12 +1,14 @@
 NAME = PmergeMe
 CC = c++
-CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
+CPP_FLAGS = -Werror -Wall -Wextra -std=c++98 -MMD -MP
 INCLUDE = includes
+OBJ_DIR = obj
 LIBFTPP_DIR = ../../LIBFTPP
 LIBFTPP_INCLUDE = $(LIBFTPP_DIR)/include
 LIBFTPP_LIB = $(LIBFTPP_DIR)/libftpp.a
 UNAME_S := $(shell uname -s)
 SRC = main.cpp PmergeMe.cpp
+OBJ = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 ifeq ($(UNAME_S),Darwin)
     LIBFTPP_SHARED = $(LIBFTPP_DIR)/libftpp.dylib
@@ -15,8 +17,15 @@ else
 endif
 
 
-all: $(LIBFTPP_LIB)
-	$(CC) $(CPP_FLAGS) $(SRC) -I$(INCLUDE) -I$(LIBFTPP_INCLUDE) $(LIBFTPP_LIB) -o $(NAME)
+all: $(NAME)
+
+$(NAME): $(OBJ) $(LIBFTPP_LIB)
+	$(CC) $(CPP_FLAGS) $(OBJ) -I$(INCLUDE) -I$(LIBFTPP_INCLUDE) $(LIBFTPP_LIB) -o $(NAME)
+
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CPP_FLAGS) -I$(INCLUDE) -I$(LIBFTPP_INCLUDE) -c $< -o $@
 
 $(LIBFTPP_LIB):
 	@echo "Compilation de LIBFTPP..."
@@ -30,12 +39,15 @@ $(LIBFTPP_SHARED):
 	@make -C $(LIBFTPP_DIR) dev
 
 clean:
-	rm -f $(NAME)
+	rm -rf $(OBJ_DIR)
 	@make -C $(LIBFTPP_DIR) clean
 
 fclean: clean
+	rm -f $(NAME)
 	@make -C $(LIBFTPP_DIR) fclean
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 .PHONY: all re clean fclean shared

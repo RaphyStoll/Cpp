@@ -169,7 +169,9 @@ fclean: clean
 	@echo "$(GREEN)✓ Libraries cleaned!$(NC)"
 
 # Recompilation
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 pull-libftpp:
 	git fetch libftpp
