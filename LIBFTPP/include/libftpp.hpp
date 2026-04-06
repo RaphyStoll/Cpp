@@ -10,5 +10,6 @@
 #include "DisplayFormatter.hpp"
 #include "HttpRequest.hpp"
 #include "Net.hpp"
+#include "TypeInspector.hpp"
 #include "StringUtils.hpp"
 #include "PathUtils.hpp"

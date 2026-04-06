@@ -13,21 +13,13 @@ PmergeMe::PmergeMe(int argc, char **tab) : _logger("general")
 		throw PmergeMe::ParseError();
 	_size = _v.size();
 	if (!is_sorted(get_v())) {
-		_logger << "in constructor is sorted" << std::endl;
+		_logger << "in constructor isn't sorted" << std::endl;
 		throw PmergeMe::StartSorted(); 
 	}
+	_start_time = libftpp::time::Clock::now_us();
+	_end_time = 0;
 	std::cout << "before : ";
 	print_vector();
-}
-
-int PmergeMe::get_size()
-{
-	return this->_size;
-}
-
-std::vector<int> PmergeMe::get_v()
-{
-	return this->_v;
 }
 
 bool PmergeMe::init_vector(int argc, char **tab)
@@ -87,6 +79,8 @@ void PmergeMe::run()
 	PmergeMe::Merge_sort(PmergeMe::get_v());
 	std::cout << "after : ";
 	PmergeMe::print_vector();
+	//Time to process a range of 5 elements with std::[..] : 0.00031 us
+	PmergeMe::print_time(_v);
 	return;
 }
 
