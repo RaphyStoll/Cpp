@@ -50,4 +50,7 @@ re:
 	@$(MAKE) fclean
 	@$(MAKE) all
 
-.PHONY: all re clean fclean shared
+compdb:
+	bear -- $(MAKE) re
+
+.PHONY: all re clean fclean shared compdb
