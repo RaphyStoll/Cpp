@@ -10,7 +10,7 @@
 PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
   if (!init_vector(argc, tab))
     throw PmergeMe::ParseError();
-  if (!is_sorted(get_v())) {
+  if (is_sorted(get_v())) {
     _logger << "in constructor is sorted" << std::endl;
     throw PmergeMe::StartSorted();
   }
@@ -18,9 +18,11 @@ PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
     _logger << "dobble value not accepted" << std::endl;
     throw PmergeMe::ParseError();
   }
+  _stash = -1;
   _start_time = libftpp::time::Clock::now_us();
   _end_time = 0;
   std::cout << "before : ";
+  create_pairs(get_v());
   print_vector();
 }
 
@@ -46,6 +48,7 @@ bool PmergeMe::init_vector(int argc, char **tab) {
 
 void PmergeMe::Merge_sort(std::vector<int> vct) {
 
+  //fin de fonction
   if (!PmergeMe::is_sorted(vct))
     throw PmergeMe::NotSorted();
   _logger << "sorted" << std::endl;

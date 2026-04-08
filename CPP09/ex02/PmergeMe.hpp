@@ -22,7 +22,7 @@ private:
   void Merge_sort(std::vector<int> vct);
 
   //helper function
-  bool create_pairs(std::vector<int> &vct) {
+  bool create_pairs(const std::vector<int> &vct) {
     if (vct.size() < 2)
         return true;
 
@@ -37,6 +37,7 @@ private:
             _stash = vct[i];
         }
     }
+    print_pairs(_logger);
     return true;
   }
   bool is_sorted(const std::vector<int> &vct) {
@@ -60,6 +61,18 @@ private:
     _logger << std::endl;
     std::cout << std::endl;
   };
+
+  template <typename Stream>
+  void print_pairs(Stream &os) {
+    os << "Pairs: ";
+    for (size_t i = 0; i < _pairs.size(); ++i) {
+      os << "[" << _pairs[i].first << ", " << _pairs[i].second << "] ";
+    }
+    os << std::endl;
+    if (_stash != -1) {
+      os << "Stash: " << _stash << std::endl;
+    }
+  }
 
   bool check_duplicate_value(const std::vector<int> &vct) {
     if (vct.size() < 2)
