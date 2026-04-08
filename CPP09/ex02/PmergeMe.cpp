@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include "Clock.hpp"
 #include "libftpp.hpp"
 
 #include <climits>
@@ -18,7 +19,7 @@ PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
     throw PmergeMe::ParseError();
   }
   _stash = -1;
-  _start_time = libftpp::time::Clock::now_us();
+  _start_time = 0;
   _end_time = 0;
   std::cout << "before : ";
   print_vector(std::cout, _v);
@@ -54,6 +55,7 @@ void PmergeMe::Merge_sort(std::vector<int> vct) {
 
 
 void PmergeMe::run() {
+  _start_time = libftpp::time::Clock::now_us();
   create_pairs(_v, _pairs);
   sort_and_extract_chain(_chain_vector, _pairs);
   insert_remaining_elements(_chain_vector, _pairs);
@@ -62,6 +64,7 @@ void PmergeMe::run() {
   PmergeMe::print_vector(std::cout, _chain_vector);
   std::cout << std::endl;
   PmergeMe::print_time(_chain_vector, _start_time);
+  _start_time = libftpp::time::Clock::now_us();
   sort_and_extract_chain(_chain_deque, _pairs);
   insert_remaining_elements(_chain_deque, _pairs);
   PmergeMe::print_time(_chain_deque, _start_time);
