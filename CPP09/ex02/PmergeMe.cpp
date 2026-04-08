@@ -10,11 +10,11 @@
 PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
   if (!init_vector(argc, tab))
     throw PmergeMe::ParseError();
-  if (is_sorted(get_v())) {
+  if (is_sorted(_v)) {
     _logger << "in constructor is sorted" << std::endl;
     throw PmergeMe::StartSorted();
   }
-  if (!check_duplicate_value(get_v())) {
+  if (!check_duplicate_value(_v)) {
     _logger << "dobble value not accepted" << std::endl;
     throw PmergeMe::ParseError();
   }
@@ -22,8 +22,8 @@ PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
   _start_time = libftpp::time::Clock::now_us();
   _end_time = 0;
   std::cout << "before : ";
-  create_pairs(get_v());
-  print_vector();
+  print_vector(std::cout, _v);
+  create_pairs(_v);
 }
 
 bool PmergeMe::init_vector(int argc, char **tab) {
@@ -43,6 +43,8 @@ bool PmergeMe::init_vector(int argc, char **tab) {
       return false;
     }
   }
+  _logger << "initial vector : ";
+  print_vector(_logger, _v);
   return true;
 }
 
@@ -51,13 +53,13 @@ void PmergeMe::Merge_sort(std::vector<int> vct) {
   //fin de fonction
   if (!PmergeMe::is_sorted(vct))
     throw PmergeMe::NotSorted();
-  _logger << "sorted" << std::endl;
+  _logger << "merge sort sorted" << std::endl;
 }
 
 void PmergeMe::run() {
-  PmergeMe::Merge_sort(PmergeMe::get_v());
+  sort_and_extract_chain();
   std::cout << "after : ";
-  PmergeMe::print_vector();
+  PmergeMe::print_vector(std::cout, _chain_vector);
   // Time to process a range of 5 elements with std::[..] : 0.00031 us
   PmergeMe::print_time(_v);
   return;

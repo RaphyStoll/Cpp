@@ -40,6 +40,16 @@ private:
     print_pairs(_logger);
     return true;
   }
+
+  void sort_and_extract_chain() {
+    std::sort(_pairs.begin(), _pairs.end());
+    for (size_t i = 0; i < _pairs.size(); ++i)
+      _chain_vector.push_back(_pairs[i].first);
+    if (!_pairs.empty())
+      _chain_vector.insert(_chain_vector.begin(), _pairs[0].second);
+    print_pairs(_logger);
+  }
+
   bool is_sorted(const std::vector<int> &vct) {
     if (vct.size() < 2)
       return true;
@@ -53,13 +63,12 @@ private:
     return true;
   };
 
-  void print_vector() {
-    for (size_t i = 0; i < _v.size(); i++) {
-      _logger << _v[i] << " ";
-      std::cout << _v[i] << " ";
+  template <typename Stream>
+  void print_vector(Stream &os, const std::vector<int> &vct) {
+    for (size_t i = 0; i < vct.size(); i++) {
+        os << vct[i] << " ";
     }
-    _logger << std::endl;
-    std::cout << std::endl;
+    os << std::endl;
   };
 
   template <typename Stream>
@@ -71,6 +80,32 @@ private:
     os << std::endl;
     if (_stash != -1) {
       os << "Stash: " << _stash << std::endl;
+    }
+  }
+  
+  // J(n) = J(n-1) + 2*J(n-2)
+  size_t get_jacobsthal_number(size_t n) {
+    static const size_t h_jacob[] = {
+        0, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365,
+        2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525,
+        699051, 1398101, 2796203, 5592405, 11184811, 22369621,
+        44739243, 89478485, 178956971, 357913941, 715827883};
+
+    size_t h_size = sizeof(h_jacob) / sizeof(h_jacob[0]);
+
+    if (n < h_size) {
+      return h_jacob[n];
+    } else {
+      size_t jN1 = h_jacob[h_size - 1];
+      size_t jN2 = h_jacob[h_size - 2];
+      size_t current = 0;
+
+      for (size_t i = h_size; i <= n; ++i) {
+        current = jN1 + 2 * jN2;
+        jN2 = jN1;
+        jN1 = current;
+      }
+      return current;
     }
   }
 
@@ -133,13 +168,11 @@ public:
 
   class ParseError : public std::exception {
   public:
-    virtual const char *what() const throw() {
-      return "Parsing error look logs";
-    };
+    virtual const char *what() const throw() { return "ERROR: Parsing error look logs"; };
   };
   class NotSorted : public std::exception {
   public:
-    virtual const char *what() const throw() { return "this isn't sorted"; };
+    virtual const char *what() const throw() { return "ERROR: This isn't sorted"; };
   };
   class StartSorted : public std::exception {
   public:
