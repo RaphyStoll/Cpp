@@ -40,7 +40,7 @@ private:
 
   template <typename Container, typename PairContainer>
   void sort_and_extract_chain(Container &chain, PairContainer &pairs) {
-    std::sort(pairs.begin(), pairs.end());
+    std::stable_sort(pairs.begin(), pairs.end());
     for (size_t i = 0; i < pairs.size(); ++i)
       chain.push_back(pairs[i].first);
     if (!pairs.empty())
