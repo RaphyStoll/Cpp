@@ -1,4 +1,4 @@
-NAME = ScavTrap
+NAME = FragTrap
 CC = c++
 CPP_FLAGS = -Werror -Wall -Wextra -std=c++98
 INCLUDE = includes

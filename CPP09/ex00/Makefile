@@ -1,4 +1,4 @@
-NAME = btc
+NAME = BTC
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 OBJ_DIR = obj
