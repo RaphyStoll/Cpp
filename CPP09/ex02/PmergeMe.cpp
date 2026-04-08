@@ -1,8 +1,7 @@
 #include "PmergeMe.hpp"
 #include "libftpp.hpp"
 
-#include <algorithm>
-#include <exception>
+#include <climits>
 #include <iostream>
 #include <ostream>
 #include <vector>
@@ -23,7 +22,6 @@ PmergeMe::PmergeMe(int argc, char **tab) : _logger("general") {
   _end_time = 0;
   std::cout << "before : ";
   print_vector(std::cout, _v);
-  create_pairs(_v);
 }
 
 bool PmergeMe::init_vector(int argc, char **tab) {
@@ -49,18 +47,23 @@ bool PmergeMe::init_vector(int argc, char **tab) {
 }
 
 void PmergeMe::Merge_sort(std::vector<int> vct) {
-
-  //fin de fonction
   if (!PmergeMe::is_sorted(vct))
     throw PmergeMe::NotSorted();
   _logger << "merge sort sorted" << std::endl;
 }
 
+
 void PmergeMe::run() {
-  sort_and_extract_chain();
+  create_pairs(_v, _pairs);
+  sort_and_extract_chain(_chain_vector, _pairs);
+  insert_remaining_elements(_chain_vector, _pairs);
+  std::cout << std::endl;
   std::cout << "after : ";
   PmergeMe::print_vector(std::cout, _chain_vector);
-  // Time to process a range of 5 elements with std::[..] : 0.00031 us
-  PmergeMe::print_time(_v);
+  std::cout << std::endl;
+  PmergeMe::print_time(_chain_vector, _start_time);
+  sort_and_extract_chain(_chain_deque, _pairs);
+  insert_remaining_elements(_chain_deque, _pairs);
+  PmergeMe::print_time(_chain_deque, _start_time);
   return;
 }

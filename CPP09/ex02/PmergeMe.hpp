@@ -21,33 +21,65 @@ private:
   bool init_vector(int argc, char **argv);
   void Merge_sort(std::vector<int> vct);
 
-  //helper function
-  bool create_pairs(const std::vector<int> &vct) {
+  template <typename Container, typename PairContainer>
+  void create_pairs(const Container &vct, PairContainer &pairs) {
     if (vct.size() < 2)
-        return true;
+        return;
 
     for (size_t i = 0; i < vct.size(); i += 2) {
         if (i + 1 < vct.size()) {
-            // On met TOUJOURS le plus grand en premier
             if (vct[i] > vct[i + 1])
-                _pairs.push_back(std::make_pair(vct[i], vct[i + 1]));
+                pairs.push_back(std::make_pair(vct[i], vct[i + 1]));
             else
-                _pairs.push_back(std::make_pair(vct[i + 1], vct[i]));
+                pairs.push_back(std::make_pair(vct[i + 1], vct[i]));
         } else {
             _stash = vct[i];
         }
     }
-    print_pairs(_logger);
-    return true;
   }
 
-  void sort_and_extract_chain() {
-    std::sort(_pairs.begin(), _pairs.end());
-    for (size_t i = 0; i < _pairs.size(); ++i)
-      _chain_vector.push_back(_pairs[i].first);
-    if (!_pairs.empty())
-      _chain_vector.insert(_chain_vector.begin(), _pairs[0].second);
-    print_pairs(_logger);
+  template <typename Container, typename PairContainer>
+  void sort_and_extract_chain(Container &chain, PairContainer &pairs) {
+    std::sort(pairs.begin(), pairs.end());
+    for (size_t i = 0; i < pairs.size(); ++i)
+      chain.push_back(pairs[i].first);
+    if (!pairs.empty())
+      chain.insert(chain.begin(), pairs[0].second);
+  }
+
+  template<typename Container, typename PairContainer>
+  void insert_remaining_elements(Container &chain, const PairContainer &pairs) {
+    size_t size = pairs.size();
+    if (size == 0) {
+      if (_stash != -1)
+        chain.push_back(_stash);
+      return;
+    }
+
+    size_t j_idx = 2;
+    size_t last = 0;
+
+    while (last < size - 1) {
+      size_t end = get_jacobsthal_number(j_idx) - 1;
+      if (end >= size)
+        end = size - 1;
+
+      for (size_t current = end; current > last; --current) {
+        typename Container::iterator it_pos = std::lower_bound(
+            chain.begin(),
+            std::find(chain.begin(), chain.end(), pairs[current].first),
+            pairs[current].second);
+        chain.insert(it_pos, pairs[current].second);
+      }
+      last = end;
+      j_idx++;
+    }
+
+    if (_stash != -1) {
+      chain.insert(
+          std::lower_bound(chain.begin(), chain.end(), _stash),
+          _stash);
+    }
   }
 
   bool is_sorted(const std::vector<int> &vct) {
@@ -63,8 +95,8 @@ private:
     return true;
   };
 
-  template <typename Stream>
-  void print_vector(Stream &os, const std::vector<int> &vct) {
+  template <typename Stream, typename Container>
+  void print_vector(Stream &os, const Container &vct) {
     for (size_t i = 0; i < vct.size(); i++) {
         os << vct[i] << " ";
     }
@@ -122,11 +154,12 @@ private:
     return true;
   };
 
-  template <typename T> void print_time(const T &inspected) {
+  template <typename T>
+  void print_time(const T &inspected, libftpp::time::timestamp_us_t start) {
     std::cout << "Time to process a range of " << inspected.size()
               << " elements with "
               << libftpp::meta::TypeInspector::name(inspected) << " : "
-              << libftpp::time::Clock::elapsed_compact_since_us(_start_time)
+              << libftpp::time::Clock::elapsed_compact_since_us(start)
               << std::endl;
   }
 
