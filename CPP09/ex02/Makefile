@@ -12,8 +12,10 @@ OBJ = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 ifeq ($(UNAME_S),Darwin)
     LIBFTPP_SHARED = $(LIBFTPP_DIR)/libftpp.dylib
+    RANDOM_CMD = jot -r 10 1 100000
 else
     LIBFTPP_SHARED = $(LIBFTPP_DIR)/libftpp.so
+    RANDOM_CMD = shuf -i 1-100000 -n 10
 endif
 
 
@@ -45,6 +47,14 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	@make -C $(LIBFTPP_DIR) fclean
+
+test_%: $(NAME)
+	@echo "Lancement du test avec $* nombres aléatoires..."
+	@if [ "$(UNAME_S)" = "Darwin" ]; then \
+		./$(NAME) `jot -r $* 1 100000 | tr '\n' ' '`; \
+	else \
+		./$(NAME) `shuf -i 1-100000 -n $* | tr '\n' ' '`; \
+	fi
 
 re:
 	@$(MAKE) fclean
