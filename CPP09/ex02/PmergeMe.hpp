@@ -20,19 +20,27 @@ private:
 
   bool init_vector(int argc, char **argv);
   void Merge_sort(std::vector<int> vct);
+  void count_if();
 
   template <typename Container, typename PairContainer>
   void create_pairs(const Container &vct, PairContainer &pairs) {
-    if (vct.size() < 2)
-        return;
+    if (vct.size() < 2) {
+      count_if();
+      return;
+    }
 
     for (size_t i = 0; i < vct.size(); i += 2) {
         if (i + 1 < vct.size()) {
-            if (vct[i] > vct[i + 1])
-                pairs.push_back(std::make_pair(vct[i], vct[i + 1]));
-            else
-                pairs.push_back(std::make_pair(vct[i + 1], vct[i]));
+            if (vct[i] > vct[i + 1]) {
+              count_if();
+              pairs.push_back(std::make_pair(vct[i], vct[i + 1]));
+            }
+            else {
+              count_if();
+              pairs.push_back(std::make_pair(vct[i + 1], vct[i]));
+            }
         } else {
+            count_if();
             _stash = vct[i];
         }
     }
@@ -43,16 +51,21 @@ private:
     std::stable_sort(pairs.begin(), pairs.end());
     for (size_t i = 0; i < pairs.size(); ++i)
       chain.push_back(pairs[i].first);
-    if (!pairs.empty())
+    if (!pairs.empty()) {
+      count_if();
       chain.insert(chain.begin(), pairs[0].second);
+    }
   }
 
   template<typename Container, typename PairContainer>
   void insert_remaining_elements(Container &chain, const PairContainer &pairs) {
     size_t size = pairs.size();
     if (size == 0) {
-      if (_stash != -1)
+      count_if();
+      if (_stash != -1) {
+        count_if();
         chain.push_back(_stash);
+      }
       return;
     }
 
@@ -61,8 +74,10 @@ private:
 
     while (last < size - 1) {
       size_t end = get_jacobsthal_number(j_idx) - 1;
-      if (end >= size)
+      if (end >= size) {
+        count_if();
         end = size - 1;
+      }
 
       for (size_t current = end; current > last; --current) {
         typename Container::iterator it_pos = std::lower_bound(
@@ -76,6 +91,7 @@ private:
     }
 
     if (_stash != -1) {
+      count_if();
       chain.insert(
           std::lower_bound(chain.begin(), chain.end(), _stash),
           _stash);
@@ -87,6 +103,7 @@ private:
       return true;
     for (size_t i = 1; i < vct.size(); ++i) {
       if (vct[i - 1] > vct[i]) {
+        count_if();
         _logger << "isn't sorted = " << vct[i - 1] << ">" << vct[i]
                 << std::endl;
         return false;
@@ -126,8 +143,11 @@ private:
     size_t h_size = sizeof(h_jacob) / sizeof(h_jacob[0]);
 
     if (n < h_size) {
+      count_if();
       return h_jacob[n];
-    } else {
+    }
+    else {
+      count_if();
       size_t jN1 = h_jacob[h_size - 1];
       size_t jN2 = h_jacob[h_size - 2];
       size_t current = 0;
@@ -142,10 +162,13 @@ private:
   }
 
   bool check_duplicate_value(const std::vector<int> &vct) {
-    if (vct.size() < 2)
+    if (vct.size() < 2) {
+      count_if();
       return true;
+    }
     for (size_t i = 1; i < vct.size(); ++i) {
       if (vct[i - 1] == vct[i]) {
+        count_if();
         _logger << "duplicate value = " << vct[i - 1] << "=" << vct[i]
                 << std::endl;
         return false;

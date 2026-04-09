@@ -47,12 +47,11 @@ bool PmergeMe::init_vector(int argc, char **tab) {
   return true;
 }
 
-void PmergeMe::Merge_sort(std::vector<int> vct) {
-  if (!PmergeMe::is_sorted(vct))
-    throw PmergeMe::NotSorted();
-  _logger << "merge sort sorted" << std::endl;
+void PmergeMe::count_if() {
+  static size_t count = 0;
+  count++;
+  _logger << "if count =" << count << std::endl;
 }
-
 
 void PmergeMe::run() {
   _start_time = libftpp::time::Clock::now_us();
