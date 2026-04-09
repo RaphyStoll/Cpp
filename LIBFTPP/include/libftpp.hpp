@@ -13,3 +13,4 @@
 #include "TypeInspector.hpp"
 #include "StringUtils.hpp"
 #include "PathUtils.hpp"
+#include "Algorithm.hpp"
